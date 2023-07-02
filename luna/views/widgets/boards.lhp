@@ -1,0 +1,12 @@
+<?args state ?>
+<?lua local cfg = require("config")
+local sections = cfg.main.boards
+for i=1, #sections do
+	local section = sections[i] ?>
+	<span class="boardlistsection"><b><?= section.name ?></b></span><br>
+	<? for i=1, #section do
+		local board = section[i] ?>
+		<a class="boardlistboard" href="/luna/<?= board.id ?>/" <? if board == state.board then ?>x-selected="true"<? end ?>>/<?= board.id ?>/: <?= board.name ?>
+		<div class="boardlistthreads" id="boardlist_<?= board.id ?>"></div>
+	<? end ?>
+<? end ?>

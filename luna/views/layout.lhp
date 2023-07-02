@@ -1,0 +1,28 @@
+<?args content, state ?>
+<html>
+	<head>
+		<title><?= state.pagetitle ?></title>
+		<!--?= require("views.opengraph") ?-->
+		<link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+	</head>
+	<body>
+		<table>
+			<tr>
+				<td>
+					<?= include("views.widgets.boards")(state) ?>
+				</td>
+				<td rowspan="2">
+					<? if content then ?>
+						<?= include(content)(state) ?>
+					<? else ?>
+						<h1>no content</h1>
+						<small>(how did we get here?)</small>
+					<? end ?>
+				</td>
+			</tr>
+			<tr>
+				<td><?= include("views.widgets.form")(state.boards, state.thread) ?></td>
+			</tr>
+		</table>
+	</body>
+</html>

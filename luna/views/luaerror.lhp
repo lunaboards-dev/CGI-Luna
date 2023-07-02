@@ -1,0 +1,12 @@
+<?args err ?>
+<html>
+	<head>
+		<title>Lua error!</title>
+	</head>
+	<body>
+		<h1>Lua error!</h1>
+		<code>
+			<?lua= err:gsub("\n", "<br>"):gsub("\t", "&nbsp;&nbsp;&nbsp;&nbsp;") ?>
+		</code>
+	</body>
+</html>
