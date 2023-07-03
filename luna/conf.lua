@@ -93,4 +93,10 @@ return {
 			}
 		}
 	};
+	db = {
+		driver = "mysql";
+		database = "cgiluna";
+		username = "username";
+		password = "password";
+	}
 }
