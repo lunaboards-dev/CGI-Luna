@@ -53,7 +53,7 @@ function utils.random_entry(list)
 	return list[utils.random(#list)]
 end
 
-function utils.randomdata(length)
+function utils.random_data(length)
 	local s = ""
 	for i=1, length do
 		s = s .. string.char(math.random(0, 255))
@@ -77,6 +77,16 @@ end
 function utils.redirect(instance, code, to)
 	instance:setheader("Location", to)
 	instance:send(code)
+end
+
+function utils.path_join(base, ...)
+	local path_parts = table.pack(...)
+	base = base:gsub("/$", "")
+	for i=1, path_parts.n do
+		path_parts[i] = path_parts[i]:gsub("^/", ""):gsub("/$", "")
+	end
+	local str = table.concat(path_parts, "/")
+	return base .. (#str > 0 and "/" or "") .. str
 end
 
 return utils

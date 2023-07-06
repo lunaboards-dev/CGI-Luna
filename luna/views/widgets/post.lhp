@@ -1,0 +1,41 @@
+<?args post, idx, hash, admin, body, files ?>
+<? local cfg = require("config") ?>
+<? local utils = require("utils") ?>
+<div id="p<?= post.id ?>" class="lunapost">
+	<div class="lunapostheader">
+		<? if admin then ?>
+			<div class="lunaadmin">
+				<span class="lunaip"><?= post.id ?></span>
+				<? if admin.warn ?><a class="lunawarn" href="/scripts/admintools.lua?post=<?= post.id ?>&action=warn">Warn</a><? end ?>
+				<? if admin.delpost ?><a class="lunadelpost" href="/scripts/admintools.lua?post=<?= post.id ?>&action=delete">Delete</a><? end ?>
+				<? if admin.ban ?><a class="lunaban" href="/scripts/admintools.lua?post=<?= post.id ?>&action=ban">Ban</a><? end ?>
+			</div>
+		<? end ?>
+		<span class="lunapostid">ID: <span class="lunapostid_id"><?= post.id ?></span></span>
+		<span class="lunadate">Date: <span class="lunadatetimestamp"><?= post.creation ?></span></span>
+		<? if post.poster then ?>
+			<!-- idfk -->
+		<? else ?>
+			<span class="lunaposthash" style="color: #<?= hash ?>"><?= hash ?></span>
+		<? end ?>
+	</div>
+	<div class="lunapostbody">
+		<table class="lunafiles">
+			<th>
+				<? for i=1, #files do ?>
+					<td>
+						File: <a href="<?= utils.path_join(cfg.uploads.webpath, files[i].hash.."."..files[i].ext) ?>"><?= files[i].name ?></a> (<?= files[i].size ?>)
+					</td>
+				<? end ?>
+			<th>
+			<tr>
+				<? for i=1, #files do ?>
+					<td>
+						<img href="<?= utils.path_join(cfg.uploads.webpath, "thumb", files[i].hash..".jpg") ?>">
+					</td>
+				<? end ?>
+			</tr>
+		<? -- should be escaped unless it's an admeme post who can do HTML ?>
+		<?= body ?>
+	</div>
+</div>

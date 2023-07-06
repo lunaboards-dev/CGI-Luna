@@ -49,4 +49,6 @@ function cgi:request()
 	return os.getenv("REQUEST_METHOD"), os.getenv("REQUEST_URI")
 end
 
+cgi.db = require("db")()
+
 return cgi

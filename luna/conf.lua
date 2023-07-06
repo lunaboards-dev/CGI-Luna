@@ -78,7 +78,8 @@ return {
 					};
 					desc = {
 						"get drawing, drawfag";
-					}
+					},
+					boardtype = "art"
 				},
 				{
 					id = "a";
@@ -90,13 +91,32 @@ return {
 						"chinese cartoons"
 					};
 				}
+			},
+			{
+				name = "Generals";
+				nsfw = false;
+				{
+					id = "vg";
+					name = "Video Game Generals";
+					title = {
+						"beep boop";
+					};
+					desc = {
+						"sweat harder, sweatlord";
+					};
+					boardtype = "generals";
+				}
 			}
 		}
 	};
 	db = {
 		driver = "mysql";
-		database = "cgiluna";
+		database = "luna";
 		username = "username";
 		password = "password";
-	}
+	};
+	uploads = {
+		fspath = "/srv/luna/uploads/";
+		webpath = "/uploads/"; -- can be path or url. should point to $fspath/files, as $fspath/tmp is used for files being processed.
+	};
 }

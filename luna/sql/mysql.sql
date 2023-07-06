@@ -8,6 +8,7 @@ CREATE TABLE luna.posts (
 	ip char(39) NOT NULL, -- support IPv6
 	creation datetime NOT NULL,
 	banmsg text,
+	etc JSON,
 	PRIMARY KEY (id)
 );
 
@@ -19,6 +20,7 @@ CREATE TABLE luna.threads (
 	creation datetime NOT NULL,
 	updated datetime NOT NULL,
 	ip char(39) NOT NULL,
+	etc JSON,
 	pin tinyint
 );
 
@@ -27,6 +29,7 @@ CREATE TABLE luna.attachments (
 	position tinyint NOT NULL,
 	ip char(39) NOT NULL,
 	original_name text NOT NULL,
+	etc JSON,
 	ref UUID NOT NULL
 );
 
@@ -34,22 +37,18 @@ CREATE TABLE luna.files (
 	ref UUID NOT NULL,
 	hash binary(32),
 	ext char(5),
+	etc JSON,
 	type ENUM('image','video','text','other','special')
 );
 
 CREATE TABLE luna.users (
-	username tinytext,
-	password tinytext,
-	role tinytext,
-	color tinytext,
-	id UUID,
+	username tinytext NOT NULL,
+	password tinytext NOT NULL,
+	role tinytext NOT NULL,
+	color tinytext NOT NULL,
+	id UUID NOT NULL,
+	etc JSON,
 	creation datetime NOT NULL
-);
-
-CREATE TABLE luna.roles (
-	user UUID,
-	role UUID,
-	board tinytext
 );
 
 CREATE TABLE luna.rolepermissions (
@@ -62,24 +61,42 @@ CREATE TABLE luna.rolepermissions (
 	ban boolean,
 	modifyroles boolean,
 	applyroles boolean,
+	html boolean,
+	etc JSON,
 	id UUID
 );
 
 CREATE TABLE luna.tokens (
-	user UUID,
-	token tinytext,
-	expiration datetime
+	user UUID NOT NULL,
+	token tinytext NOT NULL,
+	etc JSON,
+	expiration datetime NOT NULL
 );
 
 CREATE TABLE luna.miscdata (
-	type ENUM('apply', 'name', 'rank', 'special'),
-	actor tinytext,
-	data tinytext
+	type ENUM('apply', 'name', 'rank', 'special') NOT NULL,
+	actor tinytext NOT NULL,
+	data tinytext NOT NULL,
+	etc JSON
 );
 
 CREATE TABLE luna.bans (
-	ip char(39),
-	cookie tinytext
+	ip char(39) NOT NULL,
+	cookie tinytext NOT NULL,
+	reason text NOT NULL,
+	board tinytext NOT NULL,
+	post bigint NOT NULL,
+	unban datetime,
+	etc JSON
+);
+
+CREATE TABLE luna.warnings (
+	ip char(39) NOT NULL,
+	cookie tinytext NOT NULL,
+	reason text NOT NULL,
+	post bigint NOT NULL,
+	board tinytext NOT NULL,
+	etc JSON
 );
 
 INSERT INTO luna.miscdata (type, actor, data) VALUES ('special', 'engine_version', '23w26a');
