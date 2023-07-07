@@ -1,4 +1,4 @@
-local cfg = loadfile("conf.lua")()
+local cfg = require("conf") --loadfile("conf.lua")()
 
 cfg.boards = {}
 
