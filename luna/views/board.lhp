@@ -1,4 +1,0 @@
-<?args state ?>
-<? local cfg = require("config") ?>
-<h1 class="boardtitle"><?= cfg.boards[state.board].name ?></h1>
-<span class="boarddesc"><?= state.rand_entry(cfg.boards[state.board].desc) ?></span><br>
