@@ -147,7 +147,7 @@ function mysql:list_threads(board, pagesize, page)
 	--local cur = self.con:execute(string.format("SELECT * FROM %s.threads WHERE board='%s' ORDER BY pin DESC, updated DESC OFFSET %d LIMIT %d"))
 	local cur = self:fexec("SELECT * FROM %s.threads WHERE board=%s ORDER BY pin DESC, updated DESC OFFSET %d LIMIT %d",
                            const(cfg.db.database),
-						   board, pagesize, page)
+						   board, page*pagesize, pagesize)
 	--[[local posts = {}
 	local p = {}
 	while p do

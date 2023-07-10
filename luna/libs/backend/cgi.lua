@@ -17,6 +17,10 @@ function cgi:setheader(key, value)
 	self.headers[key] = value
 end
 
+function cgi:getsentheader(key)
+	return self.headers[key]
+end
+
 function cgi:write(data)
 	self.buffer = self.buffer .. data
 end
@@ -24,6 +28,10 @@ end
 function cgi:clear()
 	self.buffer = ""
 	self.headers = {}
+end
+
+function cgi:buffer()
+	return self.buffer
 end
 
 function cgi:send(status)
@@ -37,7 +45,13 @@ function cgi:send(status)
 	end
 	print("Status: "..status)
 	for k, v in pairs(self.headers) do
-		print(k..": "..v)
+		if type(v) == "table" then
+			for i=1, #v do
+				print(k..": "..v[i])
+			end
+		else
+			print(k..": "..v)
+		end
 	end
 	print("")
 	print(self.buffer)

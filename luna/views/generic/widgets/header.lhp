@@ -1,0 +1,3 @@
+<?args title, desc, subcontent ?>
+<h1 class="boardtitle"><?= title ?></h1>
+<span class="boarddesc"><?= desc ?></span>

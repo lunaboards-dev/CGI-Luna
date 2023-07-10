@@ -1,0 +1,2 @@
+<?args state, boardname, threadname, instance, posts ?>
+<?= include("views.generic.header")(boardname, threadname) ?>

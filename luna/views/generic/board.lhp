@@ -1,0 +1,5 @@
+<?args state, boardname, desc, instance, threads ?>
+<?= include("views.generic.header")(boardname, desc) ?>
+<? for i=1, #threads do ?>
+	<?= include("views.widgets.thread")(threads[i]) ?>
+<? end ?>

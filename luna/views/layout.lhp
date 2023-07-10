@@ -1,4 +1,11 @@
 <?args content, state ?>
+<?lua
+	local args = table.pack(...)
+	table.remove(args, 1)
+	table.remove(args, 2)
+	args.n = args.n - 2
+?>
+
 <html>
 	<head>
 		<title><?= state.pagetitle ?></title>
@@ -8,12 +15,14 @@
 	<body>
 		<table>
 			<tr>
-				<td>
-					<?= include("views.widgets.boards")(state) ?>
-				</td>
+				<? if state.customboards then ?>
+					<td><?= include(state.customboards)(state) ?></td>
+				<? else ?>
+					<td><?= include("views.widgets.boards")(state) ?></td>
+				<? end ?>
 				<td rowspan="2">
 					<? if content then ?>
-						<?= include(content)(state) ?>
+						<?= include(content)(state, table.unpack(args)) ?>
 					<? else ?>
 						<h1>no content</h1>
 						<small>(how did we get here?)</small>
@@ -21,7 +30,11 @@
 				</td>
 			</tr>
 			<tr>
-				<td><?= include("views.widgets.form")(state.boards, state.thread) ?></td>
+				<? if state.customform then ?>
+					<td><?= include(state.customform)(state) ?></td>
+				<? else ?>
+					<td><?= include("views.widgets.form")(state.boards, state.thread) ?></td>
+				<? end ?>
 			</tr>
 		</table>
 	</body>

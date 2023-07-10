@@ -1,1 +1,7 @@
 <?args thread, firstposts ?>
+<div id="t<?= thread.id ?>">
+	<a id="lunathread" href="/<?= thread.board ?>/<?= thread.id ?>"><?= thread.name ?></a>
+	<?
+		--local thread = 
+	?>
+</div>
