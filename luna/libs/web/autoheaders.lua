@@ -12,4 +12,8 @@ function autoheader:__call(inst)
 	end
 end
 
+autoheader:add("Date", function()
+	return os.date("%a, %d %b %Y %H:%M:%S GMT", os.time(os.date("!*t")))
+end)
+
 return setmetatable(autoheader, {__call=autoheader.__call})
