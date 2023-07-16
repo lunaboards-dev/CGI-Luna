@@ -1,4 +1,5 @@
 local utils = require("utils")
+local layouts = require("layouts")
 local board = {}
 
 function board:display_threads(args)
@@ -19,4 +20,4 @@ function board:display_posts(args)
 	}))
 end
 
-return board
+layouts.register("generic", board)
