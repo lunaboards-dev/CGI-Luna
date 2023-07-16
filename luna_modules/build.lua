@@ -19,6 +19,7 @@ local function write_file(file, data)
         fsize = #data
     }
     arc:write_data(data)
+    arc:align()
 end
 
 local function write_dir(dir)
@@ -34,6 +35,7 @@ local function write_dir(dir)
         name = dir,
         fsize = 0
     }
+    arc:align()
 end
 
 local function recurse_explore(dir, prefix, dirlist)

@@ -2,9 +2,9 @@ local lhp = require("lhp")
 local cfg = require("config")
 local utils = require("utils")
 local routes = require("routing")()
-local cpio = require("cpio")
 local modules = require("modules")
 local hook = require("hook")
+local layouts = require("layouts")
 local libmagic = require("libmagic")
 local mimetyper = libmagic.open(libmagic.MIME_TYPE)
 assert(mimetyper:load())
@@ -53,11 +53,16 @@ end)
 routes:get("^/([^/]+)/$", function(inst, board)
 	--utils.render(inst, 200, {content_type="text/html"}, board)
 	utils.saferender(inst, function()
-		utils.render(inst, 200, {content_type="text/html"}, utils.layout("views.board", nil, {
+		layouts.display_threads {
+			board = board,
+			inst = inst,
+			db = require("db")
+		}
+		--[[utils.render(inst, 200, {content_type="text/html"}, utils.layout("views.board", nil, {
 			pagetitle = "Luna/"..board.."/ - " .. utils.random_entry(cfg.boards[board].title),
 			rand_entry = utils.random_entry,
 			board = board
-		}))
+		}))]]
 	end)
 end)
 

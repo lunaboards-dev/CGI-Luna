@@ -5,10 +5,14 @@ local modules = {}
 local modlist = {}
 local files = {}
 
+for e in lfs.dir(".") do
+    io.stderr:write(e,"\n")
+end
+
 function modules.init()
-    for mods in lfs.dir("luna/modules") do
+    for mods in lfs.dir("modules") do
         if mods:match("%.cpio$") then
-            local f = io.open("luna/modules/"..mods, "rb")
+            local f = io.open("modules/"..mods, "rb")
             local arc = cpio(f, "r")
             modlist[mods] = {
                 file = f,
@@ -19,9 +23,11 @@ function modules.init()
                     stat = stat,
                     read = read
                 })
+                io.stderr:write(stat.name, "\n")
                 if stat.name:lower() == "init.lua" then
                     local code = read(stat.fsize)
-                    load(code, "=luna/modules/"..mods.."/init.lua")()
+                    --io.stderr:write(string.format("Bytes: %.2x%.2x\n", code:byte(1, 2)))
+                    assert(load(code, "=modules/"..mods.."/init.lua"))()
                 end
             end
         --[[elseif lfs.attributes("luna/modules/"..mods, "mode") == "directory" and mods ~= "." and mods ~= ".." then
@@ -55,17 +61,17 @@ table.insert(package.searchers, function(pkg)
             if file.stat.name == script_path or file.stat.name == pkg_path then
                 mod_files.file:seek("set", file.stat.body_start)
                 local code = mod_files.file:read(file.stat.fsize)
-                return load(code, "=module["..module..".cpio]/"..file.stat.name), "module["..module..".cpio]/"..file.stat.name
+                return load(code, "=module["..module.."]/"..file.stat.name), "module["..module.."]/"..file.stat.name
             elseif file.stat.name == template_path or file.stat.name == index_path then
                 mod_files.file:seek("set", file.stat.body_start)
                 local code = mod_files.file:read(file.stat.fsize)
-                return lhp.load(code, nil, "=module["..module..".cpio]/"..file.stat.name), "module["..module..".cpio]/"..file.stat.name
+                return lhp.load(code, nil, "=module["..module.."]/"..file.stat.name), "module["..module.."]/"..file.stat.name
             end
         end
-        table.insert(checked, "module["..module..".cpio]/"..script_path)
-        table.insert(checked, "module["..module..".cpio]/"..pkg_path)
-        table.insert(checked, "module["..module..".cpio]/"..template_path)
-        table.insert(checked, "module["..module..".cpio]/"..index_path)
+        table.insert(checked, "no file module["..module.."]/"..script_path)
+        table.insert(checked, "no file module["..module.."]/"..pkg_path)
+        table.insert(checked, "no file module["..module.."]/"..template_path)
+        table.insert(checked, "no file module["..module.."]/"..index_path)
     end
     return table.concat(checked, "\n\t")
 end)

@@ -6,8 +6,9 @@ function board:display_threads(args)
 	local inst = args.instance
 	local db = inst.db
 	db:list_threads(args.board, args.pagesize or 30, args.page or 0)
-	utils.render(inst, 200, {}, utils.layout("views.generic.board", {
-		board = args.board
+	utils.render(inst, 200, {}, utils.layout("views.generic.board", nil, {
+		board = args.board,
+		rendtype = "board"
 	}))
 end
 

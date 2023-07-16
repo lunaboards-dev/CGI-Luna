@@ -28,12 +28,13 @@ local function cpio_hdr(dat)
 		local _, mtime_lo, mtime_hi, fsize_lo, fsize_hi
 		local e = "<"
 		if string.unpack("<H", dat) ~= magic then e = ">" end
-		_, r.dev, r.ino, r.mode, r.uid, r.gid, r.nlink, r.rdev, mtime_hi, mtime_lo, r.namesize, fsize_hi, fsize_lo = string.unpack("e"..hdr, dat)
+		r.magic, r.dev, r.ino, r.mode, r.uid, r.gid, r.nlink, r.rdev, mtime_hi, mtime_lo, r.namesize, fsize_hi, fsize_lo = string.unpack(e..hdr, dat)
 		r.mtime = mtime_lo | (mtime_hi << 8)
 		r.fsize = fsize_lo | (fsize_hi << 8)
+		
 		return r
 	else
-		error("expected table or string")
+		error("expected table or string, got "..type(dat))
 	end
 end
 
@@ -73,7 +74,7 @@ end
 		nlink = 0,
 		rdev = 0,
 		mtime = 0,
-		name = trailer,
+		name = "TRAILER!!!",
 		fsize = (dat and #dat) or 0
 	}
 	if dat then
@@ -91,9 +92,14 @@ end
 	self.pos = self.pos + size
 	local stat = cpio_hdr(dat)
 	local name = self.file:read(stat.namesize)
-	self:align(true)
+	io.stderr:write("["..stat.namesize..": "..name.."]\n")
+	--[[for k, v in pairs(stat) do
+		io.stderr:write(k, ": ", ((type(v) == "number") and string.format("%x", v)) or tostring(v), "\n")
+	end]]
 	self.remaining = stat.fsize
 	stat.name = name:sub(1, #name-1)
+	self.pos = self.pos + stat.namesize
+	self:align(true)
 	if name == trailer then return end
 	return stat
  end
@@ -106,7 +112,12 @@ end
 
  function cpio_read:align(nofill)
 	if not nofill then
+		--io.stderr:write(string.format("skipping %x...\n", self.remaining))
+		--local rtv = self.file:read(self.remaining)
 		self.file:read(self.remaining)
+		--[[if #rtv > 0 then
+			io.stderr:write(string.format("First two bytes: %.2x%.2x\n", rtv:byte(1, 2)))
+		end]]
 		self.pos = self.pos + self.remaining
 		self.remaining = 0
 	end
