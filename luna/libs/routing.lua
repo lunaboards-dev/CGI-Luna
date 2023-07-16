@@ -18,6 +18,24 @@ function routes:error(handler)
 	self.errorhand = handler
 end
 
+local methods = {
+	"GET",
+	"HEAD",
+	"POST",
+	"PUT",
+	"DELETE",
+	"CONNECT",
+	"OPTIONS",
+	"TRACE",
+	"PATCH"
+}
+
+function routes:all(pattern, handler)
+	for i=1, #methods do
+		self:route(methods[i], pattern, handler)
+	end
+end
+
 function routes:get(pattern, handler)
 	return self:route("GET", pattern, handler)
 end

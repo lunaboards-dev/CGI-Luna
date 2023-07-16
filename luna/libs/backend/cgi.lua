@@ -1,3 +1,4 @@
+local hook = require("hook")
 local cgi = {
 	buffer = "",
 	headers = {}
@@ -43,6 +44,7 @@ function cgi:send(status)
 		print(debug.traceback():gsub("\n", "<br>\n").."<br>")
 		print("==========================================================<br>\n<br>")
 	end
+	hook.run("send", self)
 	print("Status: "..status)
 	for k, v in pairs(self.headers) do
 		if type(v) == "table" then
